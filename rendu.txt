@@ -1,0 +1,22 @@
+Activite 2 - Orchestration d'une Stack Hybride avec Docker Compose
+
+Lien du depot Git :
+- https://github.com/GeoffreyDev10/filrouge-dockermongo-dg.git
+
+Contenu du rendu :
+- docker-compose.yml
+- dossier /api avec Dockerfile, code et .dockerignore
+- dossier /mongo avec Dockerfile et scripts d'initialisation
+- dossier /mysql avec scripts d'initialisation
+- .gitignore
+- .env.example
+
+Verification attendue :
+- `docker compose ps` avec les 5 services au statut `healthy`
+- test de `GET /posts`
+- test de `GET /users`
+
+Captures fournies :
+- capture `docker compose ps` montrant les 5 services `healthy`
+- capture du succes de `http://localhost:8000/posts`
+- capture du succes de `http://localhost:8000/users`
