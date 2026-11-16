@@ -1,81 +1,34 @@
-# Fil Rouge Docker Mongo MySQL FastAPI
+# Fil rouge de conteneurisation
 
-Ce projet met en place une stack hybride orchestree avec Docker Compose.
-
-L'objectif est de faire fonctionner ensemble :
-- une base MongoDB personnalisee
-- une base MySQL
-- une interface Mongo Express
-- une interface Adminer
-- une API FastAPI qui lit MongoDB et MySQL
+Projet individuel de formation réalisé par Geoffrey Deverchere. L’objectif était de faire fonctionner une API FastAPI et deux bases de données dans des services Docker Compose, avec initialisation des données et contrôles de démarrage.
 
 ## Architecture
 
-Les 5 services demarres par `docker-compose.yml` sont :
-- `db_mongo`
-- `db_mysql`
-- `admin_mongo`
-- `admin_mysql`
-- `api`
+| Service | Rôle |
+|---|---|
+| `db_mongo` | Base MongoDB initialisée avec les publications d’exemple. |
+| `db_mysql` | Base MySQL initialisée avec les utilisateurs d’exemple. |
+| `admin_mongo` | Interface Mongo Express pour consulter MongoDB. |
+| `admin_mysql` | Interface Adminer pour consulter MySQL. |
+| `api` | API FastAPI qui expose `GET /posts` et `GET /users`. |
 
-L'API expose deux routes de verification :
-- `GET /posts` : lit les donnees MongoDB
-- `GET /users` : lit les donnees MySQL
+Le [fichier Compose](docker-compose.yml) orchestre ces services. Le code de l’API est dans `api/` et les scripts d’initialisation dans `mongo/` et `mysql/`.
 
-## Lancer le projet
+## Démarrage en environnement de test
 
-Depuis la racine du depot :
+Ce montage est prévu pour une machine de test isolée. Le Compose publie plusieurs ports et Mongo Express n’a pas d’authentification HTTP. Éviter de le démarrer tel quel sur une machine accessible depuis le réseau.
 
-```bash
+Installer Docker avec Compose, puis copier [`.env.example`](.env.example) vers `.env` à la racine. Les valeurs d’exemple sont réservées à la démonstration locale. Depuis la racine du projet, lancer :
+
+```sh
 docker compose up -d --build
-```
-
-Puis verifier l'etat des services :
-
-```bash
 docker compose ps
 ```
 
-## Verifications attendues
+## Vérifications du rendu
 
-Le rendu demande doit prouver :
-- que les 5 services sont bien demarres et en statut `healthy`
-- que `GET /posts` fonctionne
-- que `GET /users` fonctionne
+Avec les ports du fichier d’exemple, ouvrir les routes sur `localhost:8000` et vérifier l’état des cinq services. Les captures conservées dans le dépôt documentent le rendu de formation.
 
-## Captures d'ecran
-
-Les captures de verification sont rangees dans [assets/screenshots].
-
-Noms retenus :
-- `verification-api-posts.png` : preuve du succes de `http://localhost:8000/posts`
-- `verification-api-users.png` : preuve du succes de `http://localhost:8000/users`
-- `verification-stack-healthy.png` : capture attendue de `docker compose ps` avec les 5 services en `healthy`
-
-## Arborescence utile
-
-```text
-.
-|-- api/
-|-- mongo/
-|-- mysql/
-|-- assets/
-|   `-- screenshots/
-|-- docker-compose.yml
-|-- .env.example
-|-- .gitignore
-`-- rendu.txt
-```
-
-## Contenu technique
-
-- `api/` contient l'application FastAPI et son Dockerfile
-- `mongo/` contient l'image Mongo personnalisee et son script d'initialisation
-- `mysql/` contient le script SQL d'initialisation
-- `docker-compose.yml` orchestre l'ensemble
-
-## Auteur
-
-Projet realise par Geoffrey DEVERCHERE dans le cadre d'un exercice de conteneurisation autour de Docker Compose, MongoDB, MySQL et FastAPI.
-
-Ce depot presente mon travail personnel, de la conception de la stack a la mise en place des services, des scripts d'initialisation, des healthchecks et des verifications de fonctionnement.
+- [`GET /posts`](assets/screenshots/verification-api-posts.png) pour la lecture de MongoDB.
+- [`GET /users`](assets/screenshots/verification-api-users.png) pour la lecture de MySQL.
+- [État des services Compose](assets/screenshots/verification-stack-healthy.png).
